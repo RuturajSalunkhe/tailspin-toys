@@ -53,7 +53,7 @@ function createRemoteCallback(sqlite: DatabaseSync): AsyncRemoteCallback {
             case 'get': {
                 const row = statement.get(...params);
                 // Drizzle's proxy type requires an array, but its get mapper accepts no row.
-                return { rows: row === undefined ? undefined! : Object.values(row) };
+                return { rows: row === undefined ? (undefined as unknown as never[]) : Object.values(row) };
             }
         }
     };
