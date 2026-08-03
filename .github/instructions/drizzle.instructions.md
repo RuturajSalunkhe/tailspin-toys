@@ -1,11 +1,11 @@
 ---
-description: 'Drizzle ORM + libSQL data layer patterns for the Astro app'
+description: 'Drizzle ORM + Node SQLite data layer patterns for the Astro app'
 applyTo: 'db/**/*.ts,src/lib/*.ts'
 ---
 
-# Drizzle ORM + libSQL Instructions
+# Drizzle ORM + Node SQLite Instructions
 
-The app's data lives in a local SQLite database accessed through **Drizzle ORM** over a **libSQL** client (`@libsql/client`). It is consumed at **build time** from Astro page frontmatter — there is no runtime API server. Schema changes are managed with **drizzle-kit** migrations.
+The app's data lives in a local SQLite database accessed through **Drizzle ORM** over Node.js's built-in `node:sqlite` driver. It is consumed at **build time** from Astro page frontmatter — there is no runtime API server. Schema changes are managed with **drizzle-kit** migrations.
 
 ## Layout
 
@@ -14,8 +14,8 @@ The app's data lives in a local SQLite database accessed through **Drizzle ORM**
 - `db/seed.ts` — idempotent seeding from `db/games.csv` using the transforms.
 - `db/migrate.ts` — applies generated migrations.
 - `db/migrations/` — generated SQL migrations (do not hand-edit).
-- `db/test-helpers.ts` — `createTestDatabase()` returns a migrated in-memory libSQL db for tests.
-- `src/lib/db.ts` — `createDatabase(url)` / `getDatabase()` build the Drizzle client from `DATABASE_URL` (defaults to a local file under `.data/`).
+- `db/test-helpers.ts` — `createTestDatabase()` returns a migrated in-memory Node SQLite db for tests.
+- `src/lib/db.ts` — `createDatabase(url)` / `getDatabase()` build the Drizzle client from `DATABASE_URL` (defaults to the local `tailspin.db` file).
 - `src/lib/games.ts` — typed, **injectable-db** data-access helpers used by pages and tests.
 
 ## Schema Conventions
@@ -63,7 +63,10 @@ Seed-derived values must be reproducible across builds. Derive star ratings from
 
 Unit-test transforms directly and helpers against `createTestDatabase()`. See [`unit-tests.instructions.md`](unit-tests.instructions.md).
 
+## Node.js requirement
+
+Node.js 22.13 or later is required because the data layer uses the built-in `node:sqlite` module without an experimental flag. Do not introduce third-party SQLite drivers that ship platform-specific binaries.
+
 ## Type checking
 
 The data layer (`db/**/*.ts`, `src/lib/*.ts`) is type-checked by `npm run typecheck`, which runs the native **TypeScript 7** compiler (`tsgo`, from `@typescript/native-preview`) against `tsconfig.tsgo.json`. Keep helpers exported with explicit parameter and return types so `tsgo` can verify them. Linting is unaffected — ESLint + `typescript-eslint` still run on the classic `typescript` package.
-

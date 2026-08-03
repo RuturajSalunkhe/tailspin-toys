@@ -6,7 +6,7 @@ import globals from "globals";
 export default [
   // Global ignores
   {
-    ignores: ["dist/", "node_modules/", ".astro/", ".data/", "db/migrations/"],
+    ignores: ["dist/", "node_modules/", ".astro/", "db/migrations/"],
   },
 
   // Base JavaScript/TypeScript recommended rules

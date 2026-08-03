@@ -7,7 +7,7 @@ allowed-tools:
 
 # Quality Checks
 
-This is a single Astro application (Astro 7 + Drizzle ORM/libSQL). All commands run from the repository root via npm scripts.
+This is a single Astro application (Astro 7 + Drizzle ORM/Node SQLite). All commands run from the repository root via npm scripts.
 
 ## Quick Reference
 
@@ -31,7 +31,7 @@ npm run test:unit
 ```
 
 - Runs Vitest (`vitest run`) over `db/**/*.test.ts` and `src/**/*.test.ts`.
-- Covers the pure seed/transform functions and the Drizzle data-access helpers against an in-memory libSQL database.
+- Covers the pure seed/transform functions and the Drizzle data-access helpers against an in-memory Node SQLite database.
 
 ### Frontend E2E Tests
 
@@ -74,7 +74,7 @@ npm ci
 npx playwright install --with-deps chromium   # only needed for E2E
 ```
 
-- Ensure Node 20+ is available: `node --version`.
+- Ensure Node 22.13+ is available: `node --version`.
 - Run `npx astro sync` if editor/type errors reference missing generated Astro types.
 
 ---
@@ -89,8 +89,8 @@ The SQLite database must be migrated and seeded **before** `astro build`. The `p
 npm run db:setup     # db:migrate + db:seed
 ```
 
-- The database lives at `.data/tailspin.db` (gitignored) and is regenerated from `db/games.csv`.
-- To force a clean rebuild: `rm -rf .data dist && npm run build`.
+- The database lives at `tailspin.db` (gitignored) and is regenerated from `db/games.csv`.
+- To force a clean rebuild: `rm -f tailspin.db && rm -rf dist && npm run build`.
 
 ---
 
@@ -129,7 +129,7 @@ npx playwright test e2e-tests/games.spec.ts
 **Symptom**: Assertion failures in `npm run test:unit`.
 
 1. **Read the failing assertion** — Vitest prints expected vs received inline.
-2. **In-memory database**: Helper tests build a fresh `:memory:` libSQL database, run migrations, and seed fixtures per test. If a schema change isn't reflected, regenerate migrations with `npm run db:generate`.
+2. **In-memory database**: Helper tests build a fresh `:memory:` Node SQLite database, run migrations, and seed fixtures per test. If a schema change isn't reflected, regenerate migrations with `npm run db:generate`.
 3. **Determinism**: Star ratings are derived from a stable hash of the title (`ratingFromTitle`) — never `Math.random`. A flaky rating assertion usually means non-deterministic data crept in.
 
 Run a single file:
@@ -156,7 +156,7 @@ npx vitest run src/lib/games.test.ts
 **Symptom**: Tests pass locally but fail in CI (or vice versa).
 
 - **Node version mismatch**: CI uses the current Node LTS release.
-- **Database state**: CI always builds from a clean seed. Locally, delete `.data/` and rebuild if you suspect stale data.
+- **Database state**: CI always builds from a clean seed. Locally, delete `tailspin.db` and rebuild if you suspect stale data.
 - **Built vs dev**: CI tests the built `dist/` via `astro preview`. Reproduce locally with `npm run test:e2e` (which builds first) rather than against `astro dev`.
 
 ---

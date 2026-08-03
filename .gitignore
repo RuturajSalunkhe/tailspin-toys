@@ -11,7 +11,6 @@ dist/
 node_modules/
 
 # local SQLite database (regenerated from db/games.csv)
-.data/
 *.db
 
 # environment variables

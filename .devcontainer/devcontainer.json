@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
-	"name": "Tailspin Toys (Astro + Drizzle)",
+	"name": "Tailspin Toys (Astro + Drizzle + Node SQLite)",
 	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
 	"features": {
 		"ghcr.io/schlich/devcontainer-features/playwright:0": {}

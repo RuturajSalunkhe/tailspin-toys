@@ -1,6 +1,6 @@
 # Tailspin Toys Crowd Funding Development Guidelines
 
-This is a crowdfunding platform for games with a developer theme. The application is a single **Astro 7** site (fully prerendered/static output) styled with **Tailwind CSS v4**. Data is stored in a local SQLite database accessed at build time through **Drizzle ORM + libSQL**; pages query the database directly in frontmatter — there is no separate backend API or client-side UI framework. Please follow these guidelines when contributing:
+This is a crowdfunding platform for games with a developer theme. The application is a single **Astro 7** site (fully prerendered/static output) styled with **Tailwind CSS v4**. Data is stored in a local SQLite database accessed at build time through **Drizzle ORM + Node.js's built-in SQLite driver**; pages query the database directly in frontmatter — there is no separate backend API or client-side UI framework. Please follow these guidelines when contributing:
 
 ## Agent notes
 
@@ -37,7 +37,7 @@ This is a crowdfunding platform for games with a developer theme. The applicatio
 - Use TypeScript with explicit types for function parameters and return values, especially in the data layer (`db/`, `src/lib/`)
 - Frontend code (TypeScript, Astro) must pass ESLint checks (`npm run lint`)
 
-### Data Layer Patterns (Drizzle + libSQL)
+### Data Layer Patterns (Drizzle + Node SQLite)
 
 - Define tables in `db/schema.ts`; manage schema changes with drizzle-kit migrations - see `drizzle.instructions.md`
 - Keep data-access helpers in `src/lib/` with an **injectable `db`** argument so they're testable
@@ -70,8 +70,8 @@ This is a crowdfunding platform for games with a developer theme. The applicatio
 - The project uses **npm scripts** for all development tasks — there is no `scripts/` directory.
 - **Skills take precedence.** Before running a command directly, check whether a skill covers the task (e.g. the `quality-checks` skill wraps tests and lint). If one applies, follow it.
 - Key npm scripts:
-  - `npm run dev` — start the Astro dev server (`predev` migrates + seeds the database)
-  - `npm run build` — build the static site (`prebuild` migrates + seeds the database)
+  - `npm run dev` — start the Astro dev server (`predev` migrates + seeds the local SQLite database)
+  - `npm run build` — build the static site (`prebuild` migrates + seeds the local SQLite database)
   - `npm run preview` — serve the built `dist/` output
   - `npm run lint` — ESLint
   - `npm run test:unit` — Vitest unit tests
@@ -89,7 +89,7 @@ This is a crowdfunding platform for games with a developer theme. The applicatio
 The application lives at the repository root:
 
 - `db/`: Drizzle schema, migrations, transforms, seed, and `games.csv`
-- `src/lib/`: database client (`db.ts`) and data-access helpers (`games.ts`)
+- `src/lib/`: Node SQLite client (`db.ts`) and data-access helpers (`games.ts`)
 - `src/components/`: reusable `.astro` components
 - `src/layouts/`: Astro layout templates
 - `src/pages/`: Astro page routes (`index.astro` listing, `game/[id].astro`, `404.astro`, `about.astro`)

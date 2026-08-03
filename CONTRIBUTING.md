@@ -16,7 +16,7 @@ Please note that this project is released with a [Contributor Code of Conduct][c
 
 Before you can run and test the application locally, you'll need to install:
 
-- **Node.js 20+** - [Download](https://nodejs.org/) | [Homebrew](https://formulae.brew.sh/formula/node)
+- **Node.js 22.13+** - [Download](https://nodejs.org/) | [Homebrew](https://formulae.brew.sh/formula/node)
 - **Git** - [Download](https://git-scm.com/downloads) | [Homebrew](https://formulae.brew.sh/formula/git)
 
 ### Setting Up Your Development Environment
@@ -49,7 +49,7 @@ Before you can run and test the application locally, you'll need to install:
 
 ## Making Changes
 
-### Data Layer (Drizzle + libSQL)
+### Data Layer (Drizzle + Node SQLite)
 
 - Define tables in `db/schema.ts`; generate a migration with `npm run db:generate` after schema changes
 - Use type hints for all function parameters and return values

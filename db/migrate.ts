@@ -1,13 +1,17 @@
-import { migrate } from 'drizzle-orm/libsql/migrator';
+import { migrate } from 'drizzle-orm/sqlite-proxy/migrator';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { createDatabase } from '../src/lib/db';
+import { createDatabaseConnection, executeMigrationQueries } from '../src/lib/db';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
 async function run(): Promise<void> {
-    const db = createDatabase();
-    await migrate(db, { migrationsFolder: join(here, 'migrations') });
+    const { db, sqlite } = createDatabaseConnection();
+    await migrate(
+        db,
+        async (queries: string[]): Promise<void> => executeMigrationQueries(sqlite, queries),
+        { migrationsFolder: join(here, 'migrations') },
+    );
     console.log('Migrations applied.');
 }
 

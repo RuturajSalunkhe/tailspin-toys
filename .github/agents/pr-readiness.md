@@ -62,7 +62,7 @@ If any of these are unclear, ask the user before proceeding.
 
 1. Before writing, report the gaps to the user and confirm they want you to fill them.
 2. Write the minimum tests needed to cover the gaps, following project conventions:
-    - Unit tests: `db/*.test.ts` and `src/**/*.test.ts` — Vitest, in-memory libSQL, type hints (see `.github/instructions/unit-tests.instructions.md`)
+    - Unit tests: `db/*.test.ts` and `src/**/*.test.ts` — Vitest, in-memory Node SQLite, type hints (see `.github/instructions/unit-tests.instructions.md`)
     - Frontend: `e2e-tests/*.spec.ts` — use role-based Playwright locators, `test.step`, no `waitForTimeout` (see `.github/instructions/playwright.instructions.md`)
 3. Add `data-testid` attributes to any interactive elements that are missing them.
 4. Do not rewrite existing tests — only add what is missing.

@@ -1,14 +1,14 @@
 ---
-description: 'Vitest unit test guidelines for the Astro + Drizzle/libSQL data layer'
+description: 'Vitest unit test guidelines for the Astro + Drizzle/Node SQLite data layer'
 applyTo: '**/*.test.ts'
 ---
 
-# Unit Testing Guidelines (Vitest + Drizzle/libSQL)
+# Unit Testing Guidelines (Vitest + Drizzle/Node SQLite)
 
 Unit tests run with **Vitest** (`npm run test:unit`). They cover the two highest-value, framework-free layers:
 
 1. **Pure transforms** (`db/transforms.ts`) — CSV parsing, description building, de-duplication, deterministic ratings.
-2. **Data-access helpers** (`src/lib/games.ts`) — ordering, lookups — exercised against a real in-memory **libSQL** database.
+2. **Data-access helpers** (`src/lib/games.ts`) — ordering, lookups — exercised against a real in-memory **Node SQLite** database.
 
 > [!IMPORTANT]
 > Keep tests independent of the Astro runtime. Helpers accept an **injectable `db`** argument; tests pass an in-memory database, pages pass the real client. Never start an Astro server to unit test data logic.
@@ -43,7 +43,7 @@ describe('ratingFromTitle', () => {
 
 ## Testing Data-Access Helpers
 
-- Build a fresh in-memory database per test with the shared helper `createTestDatabase()` (`db/test-helpers.ts`), which runs migrations on a `:memory:` libSQL client.
+- Build a fresh in-memory database per test with the shared helper `createTestDatabase()` (`db/test-helpers.ts`), which runs migrations on a `:memory:` Node SQLite client.
 - Seed only the fixtures the test needs, then call the helper with that `db`.
 - Always assert the cheap thing first (counts, totals, ordering) before deep object shape.
 
@@ -81,6 +81,6 @@ describe('getAllGames', () => {
 
 - Follow Arrange-Act-Assert.
 - One behaviour per `it`; avoid asserting unrelated things in a single case.
-- Don't mock the database — an in-memory libSQL instance is fast and exercises real SQL/joins.
+- Don't mock the database — an in-memory Node SQLite instance is fast and exercises real SQL/joins.
 - Keep fixtures minimal but representative of relationships (game → publisher, game → category).
 - If a schema change breaks tests, regenerate migrations with `npm run db:generate` and update fixtures.

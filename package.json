@@ -2,6 +2,9 @@
   "name": "tailspin-toys",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": ">=22.13"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -23,7 +26,6 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
-    "@libsql/client": "^0.17.4",
     "@tailwindcss/vite": "^4.3.2",
     "astro": "^7.0.9",
     "drizzle-orm": "^0.45.2",

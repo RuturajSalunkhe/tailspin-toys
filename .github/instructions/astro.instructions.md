@@ -7,7 +7,7 @@ applyTo: '**/*.astro'
 
 ## Astro Component Patterns
 
-Astro handles everything in the UI: pages, layouts, components, routing, and content. The site is **fully prerendered** (`output: 'static'`) — there is no client-side UI framework and no separate API server. Pages read data **directly in frontmatter** at build time via the Drizzle/libSQL data-access helpers in `src/lib/`.
+Astro handles everything in the UI: pages, layouts, components, routing, and content. The site is **fully prerendered** (`output: 'static'`) — there is no client-side UI framework and no separate API server. Pages read data **directly in frontmatter** at build time via the Drizzle/Node SQLite data-access helpers in `src/lib/`.
 
 ### Component Structure
 
@@ -98,7 +98,7 @@ const game = await getGameById(getDatabase(), Number(id));
 
 ## Data Access
 
-- Build-time data comes from a local SQLite database via **Drizzle ORM + libSQL** (see [`drizzle.instructions.md`](drizzle.instructions.md)).
+- Build-time data comes from a local SQLite database via **Drizzle ORM + Node SQLite** (see [`drizzle.instructions.md`](drizzle.instructions.md)).
 - Import `getDatabase()` from `src/lib/db.ts` and the typed helpers from `src/lib/games.ts`.
 - The database must be migrated and seeded before `astro build`; the `prebuild` npm script (`db:setup`) handles this.
 

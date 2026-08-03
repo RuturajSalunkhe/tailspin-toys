@@ -1,6 +1,6 @@
 import { defineConfig } from 'drizzle-kit';
 
-const url = process.env.DATABASE_URL ?? 'file:./.data/tailspin.db';
+const url = process.env.DATABASE_URL ?? 'file:tailspin.db';
 
 export default defineConfig({
     dialect: 'sqlite',
