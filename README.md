@@ -110,6 +110,15 @@ The **quality-checks** skill (`.github/skills/quality-checks/SKILL.md`) wraps th
 - Diagnosing test failures (port conflicts, stale servers, flaky tests, CI divergence)
 - Validating readiness before commits, pushes, or merges
 
+### GitHub Copilot App Run Menu
+
+The [GitHub Copilot app](https://github.com/github/github-app) reads
+`.github/github-app.yml` to provide project commands in its **Run** menu.
+New sessions automatically install dependencies; use **Run development site** to
+start Astro. When Astro reports its local URL, the app opens it in the browser
+canvas automatically. The menu also provides static build and type-check
+commands for on-demand validation.
+
 ## License 
 
 This project is licensed under the terms of the MIT open source license. Please refer to the [LICENSE](./LICENSE) for the full terms.
