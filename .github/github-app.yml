@@ -15,6 +15,6 @@ scripts:
   - name: Type-check application
     command: npm run typecheck:all
 
-# Astro prints the local server URL after "Local"; capture it for the browser canvas.
-server_ready_pattern: '(?i)Local\s+(https?://\S+)'
+# Astro prints the local server URL after "Local:"; capture it for the browser canvas.
+server_ready_pattern: '(?i)Local:\s+(https?://\S+)'
 auto_open_in_browser: true
