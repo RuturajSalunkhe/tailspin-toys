@@ -27,13 +27,21 @@ test.describe('Home Page', () => {
 
   test('should filter game cards by title as the user types', async ({ page }) => {
     const searchInput = page.getByRole('searchbox', { name: 'Search games by title' });
+    const clearSearchButton = page.getByRole('button', { name: 'Clear game search' });
 
+    await expect(searchInput).toHaveAttribute('placeholder', 'Search games by title...');
     await searchInput.fill('DevOps Dominion');
 
     await expect(page.getByRole('link', { name: /DevOps Dominion/ })).toBeVisible();
     await expect(page.getByRole('link', { name: /Pipeline Conquest/ })).toBeHidden();
+    await expect(clearSearchButton).toBeVisible();
 
     await searchInput.fill('no matching game');
     await expect(page.getByTestId('no-game-results')).toBeVisible();
+
+    await clearSearchButton.click();
+    await expect(searchInput).toHaveValue('');
+    await expect(page.getByTestId('no-game-results')).toBeHidden();
+    await expect(page.getByRole('link', { name: /Pipeline Conquest/ })).toBeVisible();
   });
 });

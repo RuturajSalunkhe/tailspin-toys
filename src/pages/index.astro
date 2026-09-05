@@ -29,15 +29,25 @@ const games = await getAllGames(getDatabase());
             <label for="game-search" class="block text-sm font-medium text-slate-200 mb-2">
               Search games by title
             </label>
-            <input
-              id="game-search"
-              type="search"
-              placeholder="Search games..."
-              autocomplete="off"
-              aria-controls="games-grid"
-              data-testid="game-search"
-              class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            />
+            <div class="relative">
+              <input
+                id="game-search"
+                type="search"
+                placeholder="Search games by title..."
+                autocomplete="off"
+                aria-controls="games-grid"
+                data-testid="game-search"
+                class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-3 pr-12 text-slate-100 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+              <button
+                type="button"
+                aria-label="Clear game search"
+                data-testid="clear-game-search"
+                class="absolute right-3 top-1/2 hidden -translate-y-1/2 rounded p-1 text-slate-400 transition-colors hover:bg-slate-700 hover:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              >
+                <span aria-hidden="true" class="text-lg leading-none">&times;</span>
+              </button>
+            </div>
           </div>
 
           <div
@@ -62,10 +72,11 @@ const games = await getAllGames(getDatabase());
 
 <script>
   const searchInput = document.querySelector<HTMLInputElement>('#game-search');
+  const clearSearchButton = document.querySelector<HTMLButtonElement>('[data-testid="clear-game-search"]');
   const gameCards = document.querySelectorAll<HTMLElement>('[data-testid="game-card"]');
   const noResultsMessage = document.querySelector<HTMLElement>('[data-testid="no-game-results"]');
 
-  if (!searchInput || !noResultsMessage) {
+  if (!searchInput || !clearSearchButton || !noResultsMessage) {
     throw new Error('Game search elements are missing from the home page.');
   }
 
@@ -86,7 +97,13 @@ const games = await getAllGames(getDatabase());
 
     noResultsMessage.hidden = visibleGames > 0;
     noResultsMessage.classList.toggle('hidden', visibleGames > 0);
+    clearSearchButton.classList.toggle('hidden', searchTerm.length === 0);
   };
 
   searchInput.addEventListener('input', updateVisibleGames);
+  clearSearchButton.addEventListener('click', () => {
+    searchInput.value = '';
+    updateVisibleGames();
+    searchInput.focus();
+  });
 </script>
