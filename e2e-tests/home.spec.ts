@@ -24,4 +24,16 @@ test.describe('Home Page', () => {
     // Check that the welcome message is present using more specific locator
     await expect(page.getByText('Find your next game! And maybe even back one! Explore our collection!')).toBeVisible();
   });
+
+  test('should filter game cards by title as the user types', async ({ page }) => {
+    const searchInput = page.getByRole('searchbox', { name: 'Search games by title' });
+
+    await searchInput.fill('DevOps Dominion');
+
+    await expect(page.getByRole('link', { name: /DevOps Dominion/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Pipeline Conquest/ })).toBeHidden();
+
+    await searchInput.fill('no matching game');
+    await expect(page.getByTestId('no-game-results')).toBeVisible();
+  });
 });
