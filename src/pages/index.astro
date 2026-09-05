@@ -24,10 +24,69 @@ const games = await getAllGames(getDatabase());
       {games.length === 0 ? (
         <EmptyState text="No games available at the moment." />
       ) : (
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-testid="games-grid">
-          {games.map((game) => <GameCard game={game} />)}
-        </div>
+        <>
+          <div role="search" class="mb-6">
+            <label for="game-search" class="block text-sm font-medium text-slate-200 mb-2">
+              Search games by title
+            </label>
+            <input
+              id="game-search"
+              type="search"
+              placeholder="Search games..."
+              autocomplete="off"
+              aria-controls="games-grid"
+              data-testid="game-search"
+              class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+
+          <div
+            id="games-grid"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            data-testid="games-grid"
+          >
+            {games.map((game) => <GameCard game={game} />)}
+          </div>
+          <p
+            class="hidden mt-6 text-center text-slate-300"
+            data-testid="no-game-results"
+            aria-live="polite"
+          >
+            No games match your search.
+          </p>
+        </>
       )}
     </div>
   </div>
 </Layout>
+
+<script>
+  const searchInput = document.querySelector<HTMLInputElement>('#game-search');
+  const gameCards = document.querySelectorAll<HTMLElement>('[data-testid="game-card"]');
+  const noResultsMessage = document.querySelector<HTMLElement>('[data-testid="no-game-results"]');
+
+  if (!searchInput || !noResultsMessage) {
+    throw new Error('Game search elements are missing from the home page.');
+  }
+
+  /** Filters game cards by their title as the user types. */
+  const updateVisibleGames = (): void => {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    let visibleGames = 0;
+
+    gameCards.forEach((gameCard) => {
+      const title = gameCard.dataset.gameTitle?.toLowerCase() ?? '';
+      const isMatch = title.includes(searchTerm);
+
+      gameCard.hidden = !isMatch;
+      if (isMatch) {
+        visibleGames += 1;
+      }
+    });
+
+    noResultsMessage.hidden = visibleGames > 0;
+    noResultsMessage.classList.toggle('hidden', visibleGames > 0);
+  };
+
+  searchInput.addEventListener('input', updateVisibleGames);
+</script>
