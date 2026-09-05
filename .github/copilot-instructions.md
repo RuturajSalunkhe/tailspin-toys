@@ -98,3 +98,9 @@ The application lives at the repository root:
 - `e2e-tests/`: Playwright E2E tests (home, games, accessibility)
 - `drizzle.config.ts`, `vitest.config.ts`, `astro.config.mjs`, `playwright.config.ts`: tooling config
 - `README.md`: Project documentation
+
+## Additional Project Standards
+
+- All components in `src/components` must include JSDoc comments.
+- Astro components should use Tailwind utility classes rather than custom inline CSS.
+- Keep responses concise and focused on the code changes requested.
